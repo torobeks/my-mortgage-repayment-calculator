@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="defence.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Mortgage Repayment Calculator</h1>
+
+        <div class="mort.a">
+       <label>Loan Amount ($)</label>
+       <input type="number" id="amount"  min="0">
+        </div>
+     
+        <div class="mort.a">
+      <label>Interest Rate(%)</label>
+      <input type="number" id="rate" step="0.1" min="0">
+        </div>
+
+        <div class="mort.a">
+          <label>Loan Term(years)</label>
+          <input type="number" id="years"  min="1">
+        </div>
+        <button onclick="calculateMortgage()">Calculate Payment</button>
+
+        <div id="result">
+          <p>Monthly payment will appear here</p>
+        </div>
+    </div>
+    <script src="defence.js" defer></script>
+</body>
+</html>
