@@ -1,29 +1,51 @@
-function calculateMortgage() {
-    let amount = document.getElementById("amount").value;
-    let rate = document.getElementById("rate").value;
-    let years = document.getElementById("years").value;
+function clearForm() {
+  document.getElementById('amount').value = '';
+  document.getElementById('years').value = '';
+  document.getElementById('rate').value = '';
+  document.querySelector('input[name="type"][value="repayment"]').checked = true;
+  
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('no-result').style.display = 'block';
+}
 
-    amount = Number(amount);
-    annualRate = Number(rate);
-    years = Number(years);
+function calculate() {
+  const amount = Number(document.getElementById('amount').value);
+  const years  = Number(document.getElementById('years').value);
+  const rate   = Number(document.getElementById('rate').value);
+  const type   = document.querySelector('input[name="type"]:checked').value;
 
-    if (amount <= 0 || rate < 0 || years <= 0) {
-        document.getElementById("result").innerHTML =
-        '<p style="color: #e11d48; font-weight: 500;">Please enter valid positive numbers.</p>';
-        return;
-    }
+  if (!amount || amount <= 0 || !years || years <= 0 || !rate || rate < 0) {
+    alert('Please enter valid positive numbers in all fields.');
+    return;
+  }
 
-    let monthlyRate = rate / 100 / 12;
-    let months = years * 12;
-    let payment;
+  const monthlyRate = rate / 100 / 12;
+  const months = years * 12;
 
+  let monthlyPayment = 0;
+  let totalPayment = 0;
+
+  if (type === 'repayment') {
     if (monthlyRate === 0) {
-        payment = amount / months;
-    } else{
-        let temp = Math.pow(1 + monthlyRate, months);
-        payment = amount * (monthlyRate * temp) / (temp - 1);
+      monthlyPayment = amount / months;
+    } else {
+      const power = Math.pow(1 + monthlyRate, months);
+      monthlyPayment = amount * (monthlyRate * power) / (power - 1);
     }
+    totalPayment = monthlyPayment * months;
+  } else {
+    // Interest Only
+    monthlyPayment = (amount * (rate / 100)) / 12;
+    totalPayment = amount + (monthlyPayment * months);
+  }
 
-    document.getElementById("result").innerHTML = 
-    "Monthly Payment: $" + payment.toFixed(2);
+  // Format with commas
+  document.getElementById('monthly').textContent = 
+    '$' + monthlyPayment.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  
+  document.getElementById('total').textContent = 
+    '$' + totalPayment.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  document.getElementById('no-result').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
 }
